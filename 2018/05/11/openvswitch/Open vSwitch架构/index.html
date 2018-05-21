@@ -74,21 +74,28 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="雪域刀郎的博客" type="application/atom+xml" />
 
 
 
 
 
-<meta name="description" content="做自己爱做的事，爱自己在做的事!">
-<meta property="og:type" content="website">
+
+<meta name="description" content="按照官方的说法：Open vSwitch是一款高质量的多层虚拟交换机，以开源Apache 2许可证授权，非常适合在虚拟机环境中充当2层交换机。支持多种基于Linux的虚拟化技术，包括Xen / XenServer、KVM和VirtualBox。 它可以通过远端的controller来进行管理（可以预先下发一些流表到ovs，或者根据首包被送到controller来下发新的流表），根据流表的匹配结果，">
+<meta property="og:type" content="article">
 <meta property="og:title" content="雪域刀郎的博客">
-<meta property="og:url" content="http://www.yang-qiang.com/archives/2018/05/index.html">
+<meta property="og:url" content="http://www.yang-qiang.com/2018/05/11/openvswitch/Open vSwitch架构/index.html">
 <meta property="og:site_name" content="雪域刀郎的博客">
-<meta property="og:description" content="做自己爱做的事，爱自己在做的事!">
+<meta property="og:description" content="按照官方的说法：Open vSwitch是一款高质量的多层虚拟交换机，以开源Apache 2许可证授权，非常适合在虚拟机环境中充当2层交换机。支持多种基于Linux的虚拟化技术，包括Xen / XenServer、KVM和VirtualBox。 它可以通过远端的controller来进行管理（可以预先下发一些流表到ovs，或者根据首包被送到controller来下发新的流表），根据流表的匹配结果，">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.yang-qiang.com/image/网络架构.jpg">
+<meta property="og:image" content="http://www.yang-qiang.com/image/openvswitch各组件关系.png">
+<meta property="og:image" content="http://www.yang-qiang.com/image/OvS%20代码架构.png">
+<meta property="og:updated_time" content="2018-05-11T10:53:57.631Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="雪域刀郎的博客">
-<meta name="twitter:description" content="做自己爱做的事，爱自己在做的事!">
+<meta name="twitter:description" content="按照官方的说法：Open vSwitch是一款高质量的多层虚拟交换机，以开源Apache 2许可证授权，非常适合在虚拟机环境中充当2层交换机。支持多种基于Linux的虚拟化技术，包括Xen / XenServer、KVM和VirtualBox。 它可以通过远端的controller来进行管理（可以预先下发一些流表到ovs，或者根据首包被送到controller来下发新的流表），根据流表的匹配结果，">
+<meta name="twitter:image" content="http://www.yang-qiang.com/image/网络架构.jpg">
 
 
 
@@ -118,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://www.yang-qiang.com/archives/2018/05/"/>
+  <link rel="canonical" href="http://www.yang-qiang.com/2018/05/11/openvswitch/Open vSwitch架构/"/>
 
 
 
 
 
-  <title>归档 | 雪域刀郎的博客</title>
+  <title> | 雪域刀郎的博客</title>
   
 
 
@@ -143,7 +150,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -281,148 +288,158 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/11/openvswitch/Open vSwitch架构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雪域刀郎">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪域刀郎的博客">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline"></h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-11T17:02:47+08:00">
+                2018-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 3 篇日志。 继续努力。
-      </span>
 
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/05/22/Openvswitch入门/" itemprop="url">
-              
-                <span itemprop="name">Openvswitch入门</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-05-22T11:59:22+08:00"
-              content="2018-05-22" >
-          05-22
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/05/20/linux命令-sysctl/" itemprop="url">
-              
-                <span itemprop="name">sysctl</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-05-20T21:47:26+08:00"
-              content="2018-05-20" >
-          05-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/05/20/watch/" itemprop="url">
-              
-                <span itemprop="name">watch</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-05-20T12:24:28+08:00"
-              content="2018-05-20" >
-          05-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>按照官方的说法：Open vSwitch是一款高质量的多层虚拟交换机，以开源Apache 2许可证授权，非常适合在虚拟机环境中充当2层交换机。支持多种基于Linux的虚拟化技术，包括Xen / XenServer、KVM和VirtualBox。 它可以通过远端的controller来进行管理（可以预先下发一些流表到ovs，或者根据首包被送到controller来下发新的流表），根据流表的匹配结果，来执行相应的action（丢弃、转发等） </p>
+<h1 id="Open-vSwitch架构"><a href="#Open-vSwitch架构" class="headerlink" title="Open vSwitch架构"></a>Open vSwitch架构</h1><h2 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a><strong>网络架构</strong></h2><p><img src="/image/网络架构.jpg" alt="网络架构"></p>
+<h2 id="组件关系"><a href="#组件关系" class="headerlink" title="组件关系"></a>组件关系</h2><p><img src="/image/openvswitch各组件关系.png" alt="openvswitch各组件关系"></p>
+<p><strong>datapath</strong>：根据流表信息，对收到的数据包进行处理（根据流表的action进行操作） </p>
+<p><strong>ovsdb-sever</strong>:  OVS的数据库服务器，用来存储虚拟交换机的配置信息。它与manager和ovs-vswitchd交换信息使用了OVSDB(JSON-RPC)的方式。</p>
+<p><strong>vswitchd</strong>:  OVS的核心部件，它和上层controller通信遵从openflow协议，它与ovsdb-server通信使用OVSDB协议，它和内核模块通过netlink通信，它支持多个独立的datapath（网桥），它通过更改flow  table实现了绑定，和VLAN等功能。</p>
+<p>通过图片可以看到，用户空间运行了两个进程：vswitchd和ovsdb-server。ovsdb-server将ovs-vswitchd的配置持久化到db中，vswitchd是一个守护进程，它会向ovsdb-server读取相关配置信息，并且如果有配置需要更新也会将其同步到ovsdb-server中。它们之间的通信是通过unix  domain socket进行的。ovsdb通常是一个文件保存在linux的存储系统里面，一般它的路径是<code>/etc/openvswitch/conf.db</code>。在内核空间中，open vSwitch则提供了一个内核模块来支持数据流都交换。<br>从图上也可以看出：内核空间和用户空间的交互是通过Netlink协议实现的</p>
+<p>每一个ovs网桥或者说ovs交换机，都有一个内核空间的datapath与之相对应，可以说这个datapath就是网桥或交换机的实体，数据流都是受它控制。而它则是根据flow  table这张表进行数据都转发。每一个datapath在内核中都有一个flow  table，当数据包匹配到表中的某一项时，就会执行该项指定的action，转发数据包。</p>
+<p>为了方便配置和管理，所以有了下面这些工具： </p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">ovs</span>-vswitchd： 主要模块，实现<span class="keyword">switch的daemon，包括一个支持流交换的Linux内核模块；</span></span><br><span class="line"><span class="keyword">ovsdb-server： </span>轻量级数据库服务器，提供ovs-vswitchd获取配置信息，例如vlan、port等信息；</span><br><span class="line"><span class="symbol">ovs</span>-<span class="keyword">brcompatd： </span>让ovs-vswitch替换linux <span class="keyword">bridge，包括获取bridge </span>ioctls的Linux内核模块；</span><br><span class="line"><span class="symbol">ovs</span>-dpctl：用来配置<span class="keyword">switch内核模块；</span></span><br><span class="line"><span class="keyword">ovs-vsctl： </span>查询和更新ovs-vswitchd的配置；</span><br><span class="line"><span class="symbol">ovs</span>-appctl： 发送命令消息，运行相关daemon；</span><br><span class="line"><span class="symbol">ovs</span>-ofctl： 查询和控制OpenFlow交换机和控制器；</span><br><span class="line"><span class="symbol">ovs</span>-openflowd：一个简单的OpenFlow交换机；</span><br><span class="line"><span class="symbol">ovs</span>-controller：一个简单的OpenFlow控制器；</span><br><span class="line"><span class="symbol">ovs</span>-pki：OpenFlow交换机创建和管理公钥框架；</span><br><span class="line"><span class="symbol">ovs</span>-tcpundump：tcpdump的补丁，解析OpenFlow的消息；</span><br><span class="line"><span class="symbol">ovs</span>-<span class="keyword">bugtool：管理openvswitch的bug信息。</span></span><br></pre></td></tr></table></figure>
+<h3 id="两种转发通路"><a href="#两种转发通路" class="headerlink" title="两种转发通路"></a>两种转发通路</h3><h4 id="快速通路"><a href="#快速通路" class="headerlink" title="快速通路"></a>快速通路</h4><p>当datapath接收到数据包后，能直接查询到内核空间对应的flow table，并将该数据包转发。</p>
+<h4 id="慢速通路"><a href="#慢速通路" class="headerlink" title="慢速通路"></a>慢速通路</h4><p>而如果内核中的flow table中找不到匹配的项时，内核空间就会与用户空间进行交互，如果sdn通过ovs-vswitchd查询数据库判断数据包应该发送到哪个端口上，并将该行为缓存到内核中的flow table中，下一次就不再需要通过用户空间查询了。</p>
+<h1 id="OvS-代码架构"><a href="#OvS-代码架构" class="headerlink" title="OvS 代码架构"></a>OvS 代码架构</h1><p><img src="/image/OvS 代码架构.png" alt="OvS 代码架构"></p>
+<p>ovsdb-server 接收配置信息，同步到ovs-vswithd ，同时获取ovs-vswithd 状态信息。</p>
+<p>ovs-vswitchd ovsdb-server读取数据库信息，并将信息下发到ofproto，同时ovs-vswithd也会将ofproto中的status and statistical信息通过ovsdb-server写入到数据库中。</p>
+<p>ofproto通过网络和OpenFlow 控制器通信。通过”ofproto provider”和软件交换机以及硬件交换机通信。目前openvswitch只支持ofproto-dpif，但是用户可以很容易的实现其他ofproto  provider</p>
+<p>ofproto  provider 支持两种dpif，ofproto-dpif 实现自己的数据结构，但是对上层呈现为ofproto结构体，其具体实现细节对上不可见。</p>
+<p>netdev 对网络设备（如Ethernet）的抽象，该层基于netdev  provider实现。如果linux平台的system，tap，internal，以及dpdk的dpdk，dpdkr，dpdkvhostuser，dpdkvhostuserclient等。</p>
 
       
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/20/Openvswitch源码阅读笔记/" rel="prev" title="Openvswitch源码阅读笔记">
+                Openvswitch源码阅读笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -430,6 +447,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -450,8 +471,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -466,7 +496,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -487,15 +517,22 @@
               
               
               <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
+                
                   <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
-                </a>
+                
               </div>
             
 
           </nav>
 
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
 
           
@@ -521,6 +558,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Open-vSwitch架构"><span class="nav-number">1.</span> <span class="nav-text">Open vSwitch架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#网络架构"><span class="nav-number">1.1.</span> <span class="nav-text">网络架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件关系"><span class="nav-number">1.2.</span> <span class="nav-text">组件关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#两种转发通路"><span class="nav-number">1.2.1.</span> <span class="nav-text">两种转发通路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#快速通路"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">快速通路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#慢速通路"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">慢速通路</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OvS-代码架构"><span class="nav-number">2.</span> <span class="nav-text">OvS 代码架构</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -655,6 +708,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

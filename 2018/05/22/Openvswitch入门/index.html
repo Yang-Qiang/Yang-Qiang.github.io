@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="openvswitch,网络虚拟化," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="OVS 网络架构 OVS概念BridgeBridge代表一个以太网交换机(Switch)，一个主机中可以创建一个或者多个Bridge。Bridge的功能是根据一定规则，把从端口收到的数据包转发到另一个或多个端口，上面例子中有三个Bridge，br-tun，br-int，br-ext 添加一个网桥br0 1ovs-vsctl add-br br0 Port端口Port与物理交换机的端口概念类似，Po">
+<meta name="keywords" content="openvswitch,网络虚拟化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Openvswitch入门">
+<meta property="og:url" content="http://www.yang-qiang.com/2018/05/22/Openvswitch入门/index.html">
+<meta property="og:site_name" content="雪域刀郎的博客">
+<meta property="og:description" content="OVS 网络架构 OVS概念BridgeBridge代表一个以太网交换机(Switch)，一个主机中可以创建一个或者多个Bridge。Bridge的功能是根据一定规则，把从端口收到的数据包转发到另一个或多个端口，上面例子中有三个Bridge，br-tun，br-int，br-ext 添加一个网桥br0 1ovs-vsctl add-br br0 Port端口Port与物理交换机的端口概念类似，Po">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.yang-qiang.com/2018/05/22/Openvswitch入门/网络架构.jpg">
+<meta property="og:updated_time" content="2018-05-21T16:34:37.059Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Openvswitch入门">
+<meta name="twitter:description" content="OVS 网络架构 OVS概念BridgeBridge代表一个以太网交换机(Switch)，一个主机中可以创建一个或者多个Bridge。Bridge的功能是根据一定规则，把从端口收到的数据包转发到另一个或多个端口，上面例子中有三个Bridge，br-tun，br-int，br-ext 添加一个网桥br0 1ovs-vsctl add-br br0 Port端口Port与物理交换机的端口概念类似，Po">
+<meta name="twitter:image" content="http://www.yang-qiang.com/2018/05/22/Openvswitch入门/网络架构.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.yang-qiang.com/2018/05/22/Openvswitch入门/"/>
+
+
+
+
+
+  <title>Openvswitch入门 | 雪域刀郎的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">雪域刀郎的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">漫步云端</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/22/Openvswitch入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雪域刀郎">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪域刀郎的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Openvswitch入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-22T11:59:22+08:00">
+                2018-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络虚拟化/" itemprop="url" rel="index">
+                    <span itemprop="name">网络虚拟化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="OVS-网络架构"><a href="#OVS-网络架构" class="headerlink" title="OVS 网络架构"></a>OVS 网络架构</h1><p><img src="/2018/05/22/Openvswitch入门/网络架构.jpg" alt="网络架构"></p>
+<h1 id="OVS概念"><a href="#OVS概念" class="headerlink" title="OVS概念"></a>OVS概念</h1><h2 id="Bridge"><a href="#Bridge" class="headerlink" title="Bridge"></a>Bridge</h2><p>Bridge代表一个以太网交换机(Switch)，一个主机中可以创建一个或者多个Bridge。Bridge的功能是根据一定规则，把从端口收到的数据包转发到另一个或多个端口，上面例子中有三个Bridge，<code>br-tun</code>，<code>br-int</code>，<code>br-ext</code></p>
+<p>添加一个网桥<code>br0</code></p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ovs-vsctl<span class="built_in"> add-br </span>br0</span><br></pre></td></tr></table></figure>
+<h2 id="Port"><a href="#Port" class="headerlink" title="Port"></a>Port</h2><p>端口Port与物理交换机的端口概念类似，Port是OVS Bridge上创建的一个虚拟端口，每个Port都隶属于一个Bridge。Port有以下几种类型</p>
+<ul>
+<li><strong>Normal</strong></li>
+</ul>
+<p>可以把操作系统中已有的网卡(物理网卡em1/eth0,或虚拟机的虚拟网卡tapxxx)挂载到ovs上，ovs会生成一个同名Port处理这块网卡进出的数据包。此时端口类型为Normal。</p>
+<p>如下，主机中有一块物理网卡<code>eth1</code>，把其挂载到OVS网桥<code>br-ext</code>上，OVS会自动创建同名Port <code>eth1</code>。</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ovs-vsctl<span class="built_in"> add-port </span>br-ext eth1</span><br><span class="line"><span class="comment">#Bridge br-ext中出现Port "eth1"</span></span><br></pre></td></tr></table></figure>
+<p>有一点要注意的是，挂载到OVS上的网卡设备不支持分配IP地址，因此若之前<code>eth1</code>配置有IP地址，挂载到OVS之后IP地址将不可访问。这里的网卡设备不只包括物理网卡，也包括主机上创建的虚拟网卡</p>
+<ul>
+<li><strong>Internal</strong></li>
+</ul>
+<p>Internal类型是OVS内部创建的虚拟网卡接口，每创建一个Port，OVS会自动创建一个同名接口(Interface)挂载到新创建的Port上。接口的概念下面会提到。</p>
+<p>下面创建一个网桥br0，并创建一个Internal类型的Port <code>p0</code></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ovs-vsctl add-br br0   </span><br><span class="line">ovs-vsctl add-port br0 p0 -- <span class="builtin-name">set</span><span class="built_in"> Interface </span>p0 <span class="attribute">type</span>=internal</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看网桥br0   </span></span><br><span class="line">ovs-vsctl show br0</span><br><span class="line">   <span class="built_in"> Bridge </span><span class="string">"br0"</span></span><br><span class="line">        fail_mode: secure</span><br><span class="line">       <span class="built_in"> Port </span><span class="string">"p0"</span></span><br><span class="line">           <span class="built_in"> Interface </span><span class="string">"p0"</span></span><br><span class="line">                type: internal</span><br><span class="line">       <span class="built_in"> Port </span><span class="string">"br0"</span></span><br><span class="line">           <span class="built_in"> Interface </span><span class="string">"br0"</span></span><br><span class="line">                type: internal</span><br></pre></td></tr></table></figure>
+<p>可以看到有两个Port。当ovs创建一个新网桥时，默认会创建一个与网桥同名的Internal Port。在OVS中，只有”internal”类型的设备才支持配置IP地址信息，因此我们可以为<code>br0</code>接口配置一个IP地址，当然<code>p0</code>也可以配置IP地址</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ip addr <span class="builtin-name">add</span> 192.168.10.11/24 dev br0</span><br><span class="line">ip link <span class="builtin-name">set</span> br0 up</span><br><span class="line"><span class="comment">#添加默认路由</span></span><br><span class="line">ip<span class="built_in"> route </span><span class="builtin-name">add</span><span class="built_in"> default </span>via 192.168.10.1 dev br0</span><br></pre></td></tr></table></figure>
+<p>上面两种Port类型区别在于，Internal类型会自动创建接口(Interface)，而Normal类型是把主机中已有的网卡接口添加到OVS中</p>
+<ul>
+<li><strong>Patch</strong></li>
+</ul>
+<p>当主机中有多个ovs网桥时，可以使用Patch Port把两个网桥连起来。Patch Port总是成对出现，分别连接在两个网桥上，从一个Patch Port收到的数据包会被转发到另一个Patch Port，类似于Linux系统中的<code>veth</code>。使用Patch连接的两个网桥跟一个网桥没什么区别，OpenStack Neutron中使用到了Patch Port。上面网桥<code>br-ext</code>中的Port <code>phy-br-ext</code>与<code>br-int</code>中的Port <code>int-br-ext</code>是一对Patch Port</p>
+<p>可以使用<code>ovs-vsctl</code>创建patch设备，如下创建两个网桥<code>br0,br1</code>，然后使用一对<code>Patch Port</code>连接它们</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">ovs-vsctl add-br br0</span><br><span class="line">ovs-vsctl add-br br1</span><br><span class="line">ovs-vsctl \</span><br><span class="line">-- add-port br0 patch0 -- <span class="builtin-name">set</span><span class="built_in"> interface </span>patch0 <span class="attribute">type</span>=patch options:<span class="attribute">peer</span>=patch1 \</span><br><span class="line">-- add-port br1 patch1 -- <span class="builtin-name">set</span><span class="built_in"> interface </span>patch1 <span class="attribute">type</span>=patch options:<span class="attribute">peer</span>=patch0</span><br><span class="line"></span><br><span class="line"><span class="comment">#结果如下</span></span><br><span class="line"><span class="comment">#ovs-vsctl show</span></span><br><span class="line">   <span class="built_in"> Bridge </span><span class="string">"br0"</span></span><br><span class="line">       <span class="built_in"> Port </span><span class="string">"br0"</span></span><br><span class="line">           <span class="built_in"> Interface </span><span class="string">"br0"</span></span><br><span class="line">                type: internal</span><br><span class="line">       <span class="built_in"> Port </span><span class="string">"patch0"</span></span><br><span class="line">           <span class="built_in"> Interface </span><span class="string">"patch0"</span></span><br><span class="line">                type: patch</span><br><span class="line">                options: &#123;<span class="attribute">peer</span>=<span class="string">"patch1"</span>&#125;</span><br><span class="line">   <span class="built_in"> Bridge </span><span class="string">"br1"</span></span><br><span class="line">       <span class="built_in"> Port </span><span class="string">"br1"</span></span><br><span class="line">           <span class="built_in"> Interface </span><span class="string">"br1"</span></span><br><span class="line">                type: internal</span><br><span class="line">       <span class="built_in"> Port </span><span class="string">"patch1"</span></span><br><span class="line">           <span class="built_in"> Interface </span><span class="string">"patch1"</span></span><br><span class="line">                type: patch</span><br><span class="line">                options: &#123;<span class="attribute">peer</span>=<span class="string">"patch0"</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>连接两个网桥不止上面一种方法，linux中支持创建<code>Veth</code>设备对，我们可以首先创建一对<code>Veth</code>设备对，然后把这两个<code>Veth</code>分别添加到两个网桥上，其效果跟OVS中创建Patch Port一样，只是性能会有差别</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建veth设备对veth-a,veth-b</span></span><br><span class="line">ip link <span class="builtin-name">add</span> veth-a<span class="built_in"> type </span>veth<span class="built_in"> peer </span>name veth-b</span><br><span class="line"><span class="comment">#使用Veth连接两个网桥</span></span><br><span class="line">ovs-vsctl add-port br0 veth-a</span><br><span class="line">ovs-vsctl add-port br1 veth-b</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Tunnel</strong></li>
+</ul>
+<p>OVS中支持添加隧道(Tunnel)端口，常见隧道技术有两种<code>gre</code>或<code>vxlan</code>。隧道技术是在现有的物理网络之上构建一层虚拟网络，上层应用只与虚拟网络相关，以此实现的虚拟网络比物理网络配置更加灵活，并能够实现跨主机的L2通信以及必要的租户隔离。不同隧道技术其大体思路均是将以太网报文使用隧道协议封装，然后使用底层IP网络转发封装后的数据包，其差异性在于选择和构造隧道的协议不同。Tunnel在OpenStack中用作实现大二层网络以及租户隔离，以应对公有云大规模，多租户的复杂网络环境。</p>
+<p>OpenStack是多节点结构，同一子网的虚拟机可能被调度到不同计算节点上，因此需要有隧道技术来保证这些同子网不同节点上的虚拟机能够二层互通，就像他们连接在同一个交换机上，同时也要保证能与其它子网隔离。</p>
+<p>OVS在计算和网络节点上建立隧道Port来连接各节点上的网桥<code>br-int</code>，这样所有网络和计算节点上的<code>br-int</code>互联形成了一个大的虚拟的跨所有节点的逻辑网桥(内部靠tunnel id或VNI隔离不同子网)，这个逻辑网桥对虚拟机和qrouter是透明的，它们觉得自己连接到了一个大的<code>br-int</code>上。从某个计算节点虚拟机发出的数据包会被封装进隧道通过底层网络传输到目的主机然后解封装。</p>
+<p>上面网桥<code>br-tun</code>中<code>Port &quot;vxlan-080058ca&quot;</code>就是一个<code>vxlan</code>类型tunnel端口。下面使用两台主机测试创建vxlan隧道</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#主机192.168.7.21上</span></span><br><span class="line">ovs-vsctl<span class="built_in"> add-br </span>br-vxlan</span><br><span class="line"><span class="comment">#主机192.168.7.23上</span></span><br><span class="line">ovs-vsctl<span class="built_in"> add-br </span>br-vxlan</span><br><span class="line"><span class="comment">#主机192.168.7.21上添加连接到7.23的Tunnel Port</span></span><br><span class="line">ovs-vsctl<span class="built_in"> add-port </span>br-vxlan tun0 -- set Interface tun0 type=vxlan options:remote_ip=192.168.7.23</span><br><span class="line"><span class="comment">#主机192.168.7.23上添加连接到7.21的Tunnel Port</span></span><br><span class="line">ovs-vsctl<span class="built_in"> add-port </span>br-vxlan tun0 -- set Interface tun0 type=vxlan options:remote_ip=192.168.7.21</span><br></pre></td></tr></table></figure>
+<p>然后，两个主机上桥接到<code>br-vxlan</code>的虚拟机就像连接到同一个交换机一样，可以实现跨主机的L2连接，同时又完全与物理网络隔离。</p>
+<h2 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h2><p>Interface是连接到Port的网络接口设备，是OVS与外部交换数据包的组件，在通常情况下，Port和Interface是一对一的关系，只有在配置Port为 bond模式后，Port和Interface是一对多的关系。这个网络接口设备可能是创建<code>Internal</code>类型Port时OVS自动生成的虚拟网卡，也可能是系统的物理网卡或虚拟网卡(TUN/TAP)挂载在ovs上。 OVS中只有”Internal”类型的网卡接口才支持配置IP地址</p>
+<p><code>Interface</code>是一块网络接口设备，负责接收或发送数据包，Port是OVS网桥上建立的一个虚拟端口，<code>Interface</code>挂载在Port上。</p>
+<h2 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h2><p>OpenFlow控制器。OVS可以同时接受一个或者多个OpenFlow控制器的管理。主要作用是下发流表(Flow Tables)到OVS，控制OVS数据包转发规则。控制器与OVS通过网络连接，不一定要在同一主机上</p>
+<p>可以看到上面实例中三个网桥<code>br-int</code>,<code>br-ext</code>,<code>br-tun</code>都连接到控制器<code>Controller &quot;tcp:127.0.0.1:6633</code>上</p>
+<h2 id="datapath"><a href="#datapath" class="headerlink" title="datapath"></a>datapath</h2><p>OVS内核模块，负责执行数据交换。其内部有作为缓存使用的flows，上面已经介绍过</p>
+<h1 id="OVS中的各种流-flows"><a href="#OVS中的各种流-flows" class="headerlink" title="OVS中的各种流(flows)"></a>OVS中的各种流(flows)</h1><p>flows是OVS进行数据转发策略控制的核心数据结构，区别于Linux Bridge是个单纯基于MAC地址学习的二层交换机，flows的存在使OVS作为一款SDN交换机成为云平台网络虚拟机化主要组件</p>
+<p>OVS中有多种flows存在，用于不同目的，但最主要的还是OpenFlow flows这种，文中未明确说明的flows都是指OpenFlow flows</p>
+<h2 id="OpenFlow-flows"><a href="#OpenFlow-flows" class="headerlink" title="OpenFlow flows"></a>OpenFlow flows</h2><p>OVS中最重要的一种flows，Controller控制器下发的就是这种flows，OVS架构部分已经简单介绍过，关于openflow的具体使用，会在另一篇文章中说明</p>
+<h2 id="“hidden”-flows"><a href="#“hidden”-flows" class="headerlink" title="“hidden” flows"></a>“hidden” flows</h2><p>OVS在使用OpenFlow flow时，需要与OpenFlow控制器建立TCP连接，若此TCP连接不依赖OVS，即没有OVS依然可以建立连接，此时就是<code>out-of-band control</code>模式，这种模式下不需要”hidden” flows</p>
+<p>但是在<code>in-band control</code>模式下，TCP连接的建立依赖OVS控制的网络，但此时OVS依赖OpenFLow控制器下发的flows才能正常工作，没法建立TCP连接也就无法下发flows，这就产生矛盾了，因此需要存在一些”hidden” flows，这些”hidden” flows保证了TCP连接能够正常建立。关于<code>in-band control</code>详细介绍，参考OVS官方文档<a href="https://github.com/openvswitch/ovs/blob/master/Documentation/topics/design.rst" target="_blank" rel="noopener">Design Decisions In Open vSwitch</a> 中<strong>In-Band Control</strong>部分</p>
+<p>“hidden” flows优先级高于OpenFlow flows，它们不需要手动设置。可以使用<code>ovs-appctl</code>查看这些flows，下面命令输出内容包括<code>OpenFlow flows</code>,<code>&quot;hidden&quot; flows</code></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">ovs</span>-appctl <span class="keyword">bridge/dump-flows </span>&lt;<span class="keyword">br&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="datapath-flows"><a href="#datapath-flows" class="headerlink" title="datapath flows"></a>datapath flows</h2><p>datapath flows是<code>datapath</code>内核模块维护的flows，由内核模块维护意味着我们并不需要去修改管理它。与OpenFlow flows不同的是，它不支持优先级，并且只有一个表，这些特点使它非常适合做缓存。与OpenFlow一样的是它支持通配符，也支持指令集(多个action)</p>
+<p>datapath flows可以来自用户空间<code>ovs-vswitchd</code>缓存，也可以是datapath内核模块进行MAC地址学习到的flows，这取决与OVS是作为SDN交换机，还是像Linux Bridge那样只是一个简单基于MAC地址学习的二层交换机</p>
+<h2 id="管理flows的命令行工具"><a href="#管理flows的命令行工具" class="headerlink" title="管理flows的命令行工具"></a>管理flows的命令行工具</h2><p>我们可以修改和配置的是OpenFlow flows。datapath flow和”hidden” flows由OVS自身管理，我们不必去修改它。当然，调试场景下还是可以使用工具修改的</p>
+<p>介绍下上面三种flows管理工具，不具体说明，具体使用可以查看相关man手册</p>
+<ul>
+<li><code>ovs-ofctl dump-flows &lt;br&gt;</code> 打印指定网桥内的所有OpenFlow flows，可以存在多个流表(flow tables)，按表顺序显示。不包括”hidden” flows。这是最常用的查看flows命令，当然这条命令对所有OpenFlow交换机都有效，不单单是OVS</li>
+<li><code>ovs-appctl bridge/dump-flows &lt;br&gt;</code> 打印指定网桥内所有OpenFlow flows，包括”hidden” flows，<code>in-band control</code>模式下排错可以用到</li>
+<li><code>ovs-dpctl dump-flows [dp]</code> 打印内核模块中datapath flows，<code>[dp]</code>可以省略，默认主机中只有一个datapath <code>system@ovs-system</code><br>man手册可以找到非常详细的用法说明，注意<code>ovs-ofctl</code>管理的是OpenFlow flows</li>
+</ul>
+<h1 id="ovs-工具的使用及区别"><a href="#ovs-工具的使用及区别" class="headerlink" title="ovs-*工具的使用及区别"></a>ovs-*工具的使用及区别</h1><p>上面介绍了OVS用户空间进程以及控制器和OpenFlow协议，这里说下相关的命令行工具的使用及区别</p>
+<p><strong>ovs-vsctl</strong></p>
+<p><code>ovs-vsctl</code>是一个管理或配置<code>ovs-vswitchd</code>的高级命令行工具，高级是说其操作对用户友好，封装了对数据库的操作细节。它是管理OVS最常用的命令，除了配置flows之外，其它大部分操作比如Bridge/Port/Interface/Controller/Database/Vlan等都可以完成</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#添加网桥br0</span></span><br><span class="line">ovs-vsctl add-br br0</span><br><span class="line"><span class="comment">#列出所有网桥 </span></span><br><span class="line">ovs-vsctl list-br</span><br><span class="line"><span class="comment">#添加一个Port p1到网桥br0</span></span><br><span class="line">ovs-vsctl add-port br0 p1</span><br><span class="line"><span class="comment">#查看网桥br0上所有Port   </span></span><br><span class="line">ovs-vsctl list-ports br0</span><br><span class="line"><span class="comment">#获取br0网桥的OpenFlow控制器地址，没有控制器则返回空 </span></span><br><span class="line">ovs-vsctl get-controller br0</span><br><span class="line"><span class="comment">#设置OpenFlow控制器,控制器地址为192.168.1.10，端口为6633</span></span><br><span class="line">ovs-vsctl set-controller br0 tcp:192.168.1.10:6633</span><br><span class="line"><span class="comment">#移除controller</span></span><br><span class="line">ovs-vsctl del-controller br0</span><br><span class="line"><span class="comment">#删除网桥br0</span></span><br><span class="line">ovs-vsctl del-br br0</span><br><span class="line"><span class="comment">#设置端口p1的vlan tag为100</span></span><br><span class="line">ovs-vsctl <span class="builtin-name">set</span><span class="built_in"> Port </span>p1 <span class="attribute">tag</span>=100</span><br><span class="line"><span class="comment">#设置Port p0类型为internal</span></span><br><span class="line">ovs-vsctl <span class="builtin-name">set</span><span class="built_in"> Interface </span>p0 <span class="attribute">type</span>=internal</span><br><span class="line"><span class="comment">#添加vlan10端口，并设置vlan tag为10，Port类型为Internal</span></span><br><span class="line">ovs-vsctl add-port br0 vlan10 <span class="attribute">tag</span>=10 -- <span class="builtin-name">set</span><span class="built_in"> Interface </span>vlan10 <span class="attribute">type</span>=internal</span><br><span class="line"><span class="comment">#添加隧道端口gre0，类型为gre，远端IP为1.2.3.4</span></span><br><span class="line">ovs-vsctl add-port br0 gre0 -- <span class="builtin-name">set</span><span class="built_in"> Interface </span>gre0 <span class="attribute">type</span>=gre options:<span class="attribute">remote_ip</span>=1.2.3.4</span><br></pre></td></tr></table></figure>
+<p><strong>ovsdb-tool</strong></p>
+<p><code>ovsdb-tool</code>是一个专门管理OVS数据库文件的工具，不常用，它不直接与<code>ovsdb-server</code>进程通信</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#可以使用此工具创建并初始化database文件</span></span><br><span class="line">ovsdb-tool create [db] [schema]</span><br><span class="line"><span class="comment">#可以使用ovsdb-client get-schema [database]获取某个数据库的schema(json格式)</span></span><br><span class="line"><span class="comment">#可以查看数据库更改记录，具体到操作命令，这个比较有用   </span></span><br><span class="line">ovsdb-tool show-log -m   </span><br><span class="line">record 48: 2017-01-07 03:34:15.147 <span class="string">"ovs-vsctl: ovs-vsctl --timeout=5 -- --if-exists del-port tapcea211ae-10"</span></span><br><span class="line">        table<span class="built_in"> Interface </span>row <span class="string">"tapcea211ae-10"</span> (151f66b6):</span><br><span class="line">                delete row</span><br><span class="line">        table<span class="built_in"> Port </span>row <span class="string">"tapcea211ae-10"</span> (cc9898cd):</span><br><span class="line">                delete row</span><br><span class="line">        table<span class="built_in"> Bridge </span>row <span class="string">"br-int"</span> (fddd5e27):</span><br><span class="line">        table Open_vSwitch row a9fc1666 (a9fc1666):</span><br><span class="line"></span><br><span class="line">record 49: 2017-01-07 04:18:23.671 <span class="string">"ovs-vsctl: ovs-vsctl --timeout=5 -- --if-exists del-port tap5b4345ea-d5 -- add-port br-int tap5b4345ea-d5 -- set Interface tap5b4345ea-d5 "</span>external-ids:<span class="attribute">attached-mac</span>=\"fa:16:3e:50:1b:5b\"" -- <span class="builtin-name">set</span><span class="built_in"> Interface </span>tap5b4345ea-d5 <span class="string">"external-ids:iface-id=\"5b4345ea-d5ea-4285-be99-0e4cadf1600a\""</span> -- <span class="builtin-name">set</span><span class="built_in"> Interface </span>tap5b4345ea-d5 <span class="string">"external-ids:vm-id=\"0aa2d71e-9b41-4c88-9038-e4d042b6502a\""</span> -- <span class="builtin-name">set</span><span class="built_in"> Interface </span>tap5b4345ea-d5 external-ids:<span class="attribute">iface-status</span>=active"</span><br><span class="line">        table<span class="built_in"> Port </span>insert row <span class="string">"tap5b4345ea-d5"</span> (4befd532):</span><br><span class="line">        table<span class="built_in"> Interface </span>insert row <span class="string">"tap5b4345ea-d5"</span> (b8a5e830):</span><br><span class="line">        table<span class="built_in"> Bridge </span>row <span class="string">"br-int"</span> (fddd5e27):</span><br><span class="line">        table Open_vSwitch row a9fc1666 (a9fc1666):</span><br><span class="line"><span class="built_in">..</span>.</span><br></pre></td></tr></table></figure>
+<p><strong>ovsdb-client</strong></p>
+<p><code>ovsdb-client</code>是<code>ovsdb-server</code>进程的命令行工具，主要是从正在运行的<code>ovsdb-server</code>中查询信息，操作的是数据库相关</p>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#列出主机上的所有databases，默认只有一个库Open_vSwitch</span></span><br><span class="line"><span class="string">ovsdb-client </span><span class="built_in">list-dbs</span></span><br><span class="line"><span class="built_in">#获取指定数据库的schema信息</span></span><br><span class="line"><span class="built_in">ovsdb-client</span> <span class="built_in">get-schema</span> [<span class="string">DATABASE]</span></span><br><span class="line"><span class="comment">#列出指定数据库的所有表</span></span><br><span class="line"><span class="string">ovsdb-client </span><span class="built_in">list-tables</span> [<span class="string">DATABASE]</span></span><br><span class="line"><span class="comment">#dump指定数据库所有数据,默认dump所有table数据，如果指定table，只dump指定table数据  </span></span><br><span class="line"><span class="string">ovsdb-client </span><span class="string">dump </span>[<span class="string">DATABASE]</span> [<span class="string">TABLE]</span></span><br><span class="line"><span class="comment">#监控指定数据库中的指定表记录改变  </span></span><br><span class="line"><span class="string">ovsdb-client </span><span class="string">monitor </span><span class="string">DATABASE </span><span class="string">TABLE</span></span><br></pre></td></tr></table></figure>
+<p><strong>ovs-ofctl</strong></p>
+<p><code>ovs-ofctl</code>是专门管理配置OpenFlow交换机的命令行工具，我们可以用它手动配置OVS中的OpenFlow flows，注意其不能操作datapath flows和”hidden” flows</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看br-tun中OpenFlow flows</span></span><br><span class="line">ovs-ofctl dump-flows br-tun</span><br><span class="line"><span class="comment">#查看br-tun端口信息   </span></span><br><span class="line">ovs-ofctl show br-tun</span><br><span class="line"><span class="comment">#添加新的flow：对于从端口p0进入交换机的数据包，如果它不包含任何VLAN tag，则自动为它添加VLAN tag 101</span></span><br><span class="line">ovs-ofctl<span class="built_in"> add-flow </span>br0 <span class="string">"priority=3,in_port=100,dl_vlan=0xffff,actions=mod_vlan_vid:101,normal"</span></span><br><span class="line"><span class="comment">#对于从端口3进入的数据包，若其vlan tag为100，去掉其vlan tag，并从端口1发出 </span></span><br><span class="line">ovs-ofctl<span class="built_in"> add-flow </span>br0 in_port=3,dl_vlan=101,actions=strip_vlan,output:1</span><br><span class="line"><span class="comment">#添加新的flow: 修改从端口p1收到的数据包的源地址为9.181.137.1,show 查看p1端口ID为100   </span></span><br><span class="line">ovs-ofctl<span class="built_in"> add-flow </span>br0 <span class="string">"priority=1 idle_timeout=0,in_port=100,actions=mod_nw_src:9.181.137.1,normal"</span></span><br><span class="line"><span class="comment">#添加新的flow: 重定向所有的ICMP数据包到端口 p2</span></span><br><span class="line">ovs-ofctl<span class="built_in"> add-flow </span>br0 idle_timeout=0,dl_type=0x0800,nw_proto=1,actions=output:102</span><br><span class="line"><span class="comment">#删除编号为 100 的端口上的所有流表项   </span></span><br><span class="line">ovs-ofctl del-flows br0 <span class="string">"in_port=100"</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/openvswitch/" rel="tag"># openvswitch</a>
+          
+            <a href="/tags/网络虚拟化/" rel="tag"># 网络虚拟化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/20/linux命令-sysctl/" rel="next" title="sysctl">
+                <i class="fa fa-chevron-left"></i> sysctl
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">雪域刀郎</p>
+              <p class="site-description motion-element" itemprop="description">做自己爱做的事，爱自己在做的事!</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/Yang-Qiang" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OVS-网络架构"><span class="nav-number">1.</span> <span class="nav-text">OVS 网络架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OVS概念"><span class="nav-number">2.</span> <span class="nav-text">OVS概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bridge"><span class="nav-number">2.1.</span> <span class="nav-text">Bridge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Port"><span class="nav-number">2.2.</span> <span class="nav-text">Port</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Interface"><span class="nav-number">2.3.</span> <span class="nav-text">Interface</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Controller"><span class="nav-number">2.4.</span> <span class="nav-text">Controller</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#datapath"><span class="nav-number">2.5.</span> <span class="nav-text">datapath</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OVS中的各种流-flows"><span class="nav-number">3.</span> <span class="nav-text">OVS中的各种流(flows)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenFlow-flows"><span class="nav-number">3.1.</span> <span class="nav-text">OpenFlow flows</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#“hidden”-flows"><span class="nav-number">3.2.</span> <span class="nav-text">“hidden” flows</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#datapath-flows"><span class="nav-number">3.3.</span> <span class="nav-text">datapath flows</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理flows的命令行工具"><span class="nav-number">3.4.</span> <span class="nav-text">管理flows的命令行工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ovs-工具的使用及区别"><span class="nav-number">4.</span> <span class="nav-text">ovs-*工具的使用及区别</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">雪域刀郎</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
