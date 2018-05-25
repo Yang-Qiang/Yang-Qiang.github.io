@@ -916,6 +916,159 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/04/01/Linux下如何避免从删库到跑路的悲剧/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雪域刀郎">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪域刀郎的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/01/Linux下如何避免从删库到跑路的悲剧/" itemprop="url">Linux下如何避免从删库到跑路的悲剧</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-01T21:24:16+08:00">
+                2018-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Linux 下有些指令非常重要，或者说非常危险，rm 就是其中之一，无论跟什么参数，需要的是谨慎的操作，尤其是拥有root权限的时候。
+以 rm -rf ~这个非常危险的操作为例:
+12$ rm -rf ~rm: cannot remove `/home/user': Permission denied
+此时虽然会提示错误，但当前用户家目录下，所有的文件均已被删除，只是因为权限不能删除/home/user，如果此时用的 root，此时可以执行。
+因此可以任意执行指令 rm，是非常危险的一件事情，极有可能让你误操作，甚至未反应过来，有什么方法可以避免？
+一个是要建立这种意识，就是执行这种特殊指令
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/01/Linux下如何避免从删库到跑路的悲剧/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/02/03/虚拟化入门/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1100,7 +1253,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1111,7 +1264,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

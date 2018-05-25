@@ -116,6 +116,31 @@
   </entry>
   
   <entry>
+    <title>Linux下如何避免从删库到跑路的悲剧</title>
+    <link href="http://www.yang-qiang.com/2018/04/01/Linux%E4%B8%8B%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E4%BB%8E%E5%88%A0%E5%BA%93%E5%88%B0%E8%B7%91%E8%B7%AF%E7%9A%84%E6%82%B2%E5%89%A7/"/>
+    <id>http://www.yang-qiang.com/2018/04/01/Linux下如何避免从删库到跑路的悲剧/</id>
+    <published>2018-04-01T13:24:16.000Z</published>
+    <updated>2018-05-25T13:29:58.624Z</updated>
+    
+    <content type="html"><![CDATA[<p>Linux 下有些指令非常重要，或者说非常危险，rm 就是其中之一，无论跟什么参数，需要的是谨慎的操作，尤其是拥有root权限的时候。</p><p>以 rm -rf ~这个非常危险的操作为例:</p><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf ~</span><br><span class="line">rm: cannot <span class="built_in">remove</span> `/<span class="built_in">home</span>/user<span class="string">': Permission denied</span></span><br></pre></td></tr></table></figure><p>此时虽然会提示错误，但当前用户家目录下，所有的文件均已被删除，只是因为权限不能删除/home/user，如果此时用的 root，此时可以执行。</p><p>因此可以任意执行指令 rm，是非常危险的一件事情，极有可能让你误操作，甚至未反应过来，有什么方法可以避免？</p><p>一个是要建立这种意识，就是执行这种特殊指令前，不要急于回车，静下来一两秒，再做操作，但说起来容易，做起来难，不是一朝一夕，就能建立。</p><p>另一个是可以通过技术手段，降低执行 rm 的误操作程度，网上有不少方法，其中一种方法，就是建立类似回收站机制。</p><p><strong>1. 用户家目录下，建立隐藏文件夹.trash：</strong></p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir .trash</span></span><br></pre></td></tr></table></figure><p><strong>2. 创建 remove.sh 脚本，实现逻辑简单：</strong></p><figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ vi remove.sh</span><br><span class="line"><span class="comment">//定义文件夹目录.trash</span></span><br><span class="line">TRASH_DIR=<span class="string">"/home/user/.trash"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $*; <span class="keyword">do</span></span><br><span class="line">    <span class="comment">//定义秒时间戳</span></span><br><span class="line">    STAMP=<span class="string">`date +%s`</span></span><br><span class="line">    <span class="comment">//得到文件名称(非文件夹)，参考man basename</span></span><br><span class="line">    fileName=<span class="string">`basename $i`</span></span><br><span class="line">    <span class="comment">//将输入的参数，对应文件mv至.trash目录，文件后缀，为当前的时间戳</span></span><br><span class="line">    mv $i $TRASH_DIR/$fileName.$STAMP</span><br><span class="line">done</span><br></pre></td></tr></table></figure><p><strong>3. 修改.bashrc，增加一行：</strong></p><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># User specific <span class="built_in">aliases</span> <span class="keyword">and</span> <span class="built_in">functions</span></span><br><span class="line"><span class="built_in">alias</span> rm=<span class="string">"sh /home/user/tool/remove.sh"</span></span><br></pre></td></tr></table></figure><p>即设置一个 rm 同名 alias。</p><p><strong>4. 此时执行 rm：</strong></p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rm 1</span></span><br></pre></td></tr></table></figure><p>进入隐藏文件夹：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> .trash</span></span><br></pre></td></tr></table></figure><p>检索当前路径：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ls</span></span><br><span class="line">1.1517500702</span><br></pre></td></tr></table></figure><p>其实执行 rm 1，只是将文件 1 执行 mv，存储于隐藏目录.trash，并用时间戳改名，需要的时候可以直接恢复，实现回收站机制。</p><p><strong>5. 当然目录.trash，需要控制容量</strong>，一种方法，是可以写个定时任务，要是智能一些，就可以判断文件夹的容量，超过阈值，就执行清理操作，要是粗暴一些，可以每日定时执行清理，例如：</p><figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">0 </span><span class="number">0</span> * * * rm -rf /home/user/.trash/*</span><br></pre></td></tr></table></figure><p>每日 00:00 定时执行，清空隐藏目录.trash。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Linux 下有些指令非常重要，或者说非常危险，rm 就是其中之一，无论跟什么参数，需要的是谨慎的操作，尤其是拥有root权限的时候。&lt;/p&gt;
+&lt;p&gt;以 rm -rf ~这个非常危险的操作为例:&lt;/p&gt;
+&lt;figure class=&quot;highlight arduino&quot;&gt;&lt;
+      
+    
+    </summary>
+    
+      <category term="Linux" scheme="http://www.yang-qiang.com/categories/Linux/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>虚拟化入门</title>
     <link href="http://www.yang-qiang.com/2018/02/03/%E8%99%9A%E6%8B%9F%E5%8C%96%E5%85%A5%E9%97%A8/"/>
     <id>http://www.yang-qiang.com/2018/02/03/虚拟化入门/</id>
