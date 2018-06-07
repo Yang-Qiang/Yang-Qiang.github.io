@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="watch是一个非常实用的命令，基本所有的Linux发行版都带有这个小工具，如同名字一样，watch可以帮你监测一个命令的运行结果，省得你一遍遍的手动运行。在Linux下，watch是周期性的执行下个程序，并全屏显示执行结果。你可以拿他来监测你想要的一切命令的结果变化，比如 tail 一个 log 文件，ls 监测某个文件的大小变化，看你的想象力了！  1．命令格式：  watch[参数][命令">
+<meta name="description" content="sysctl命令被用于在内核运行时动态地修改内核的运行参数，可用的内核参数在目录/proc/sys中。它包含一些TCP/ip堆栈和虚拟内存系统的高级选项， 这可以让有经验的管理员提高引人注目的系统性能。用sysctl可以读取设置超过五百个系统变量。   语法  sysctl(选项)(参数) 选项  -n：打印值时不打印关键字； -e：忽略未知关键字错误； -N：仅打印名称； -w：当改变sysct">
 <meta property="og:type" content="article">
-<meta property="og:title" content="watch">
-<meta property="og:url" content="http://www.yang-qiang.com/2018/05/13/watch/index.html">
+<meta property="og:title" content="sysctl">
+<meta property="og:url" content="http://www.yang-qiang.com/2018/05/12/linux命令/sysctl/index.html">
 <meta property="og:site_name" content="雪域刀郎的博客">
-<meta property="og:description" content="watch是一个非常实用的命令，基本所有的Linux发行版都带有这个小工具，如同名字一样，watch可以帮你监测一个命令的运行结果，省得你一遍遍的手动运行。在Linux下，watch是周期性的执行下个程序，并全屏显示执行结果。你可以拿他来监测你想要的一切命令的结果变化，比如 tail 一个 log 文件，ls 监测某个文件的大小变化，看你的想象力了！  1．命令格式：  watch[参数][命令">
+<meta property="og:description" content="sysctl命令被用于在内核运行时动态地修改内核的运行参数，可用的内核参数在目录/proc/sys中。它包含一些TCP/ip堆栈和虚拟内存系统的高级选项， 这可以让有经验的管理员提高引人注目的系统性能。用sysctl可以读取设置超过五百个系统变量。   语法  sysctl(选项)(参数) 选项  -n：打印值时不打印关键字； -e：忽略未知关键字错误； -N：仅打印名称； -w：当改变sysct">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-25T12:44:39.380Z">
+<meta property="og:updated_time" content="2018-05-25T12:44:52.896Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="watch">
-<meta name="twitter:description" content="watch是一个非常实用的命令，基本所有的Linux发行版都带有这个小工具，如同名字一样，watch可以帮你监测一个命令的运行结果，省得你一遍遍的手动运行。在Linux下，watch是周期性的执行下个程序，并全屏显示执行结果。你可以拿他来监测你想要的一切命令的结果变化，比如 tail 一个 log 文件，ls 监测某个文件的大小变化，看你的想象力了！  1．命令格式：  watch[参数][命令">
+<meta name="twitter:title" content="sysctl">
+<meta name="twitter:description" content="sysctl命令被用于在内核运行时动态地修改内核的运行参数，可用的内核参数在目录/proc/sys中。它包含一些TCP/ip堆栈和虚拟内存系统的高级选项， 这可以让有经验的管理员提高引人注目的系统性能。用sysctl可以读取设置超过五百个系统变量。   语法  sysctl(选项)(参数) 选项  -n：打印值时不打印关键字； -e：忽略未知关键字错误； -N：仅打印名称； -w：当改变sysct">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://www.yang-qiang.com/2018/05/13/watch/"/>
+  <link rel="canonical" href="http://www.yang-qiang.com/2018/05/12/linux命令/sysctl/"/>
 
 
 
 
 
-  <title>watch | 雪域刀郎的博客</title>
+  <title>sysctl | 雪域刀郎的博客</title>
   
 
 
@@ -296,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/13/watch/">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/12/linux命令/sysctl/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="雪域刀郎">
@@ -313,7 +313,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">watch</h1>
+          <h1 class="post-title" itemprop="name headline">sysctl</h1>
         
 
         <div class="post-meta">
@@ -325,8 +325,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-13T21:24:28+08:00">
-                2018-05-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-12T21:47:26+08:00">
+                2018-05-12
               </time>
             
 
@@ -385,46 +385,44 @@
       
 
       
-        <p> watch是一个非常实用的命令，基本所有的Linux发行版都带有这个小工具，如同名字一样，watch可以帮你监测一个命令的运行结果，省得你一遍遍的手动运行。在Linux下，watch是周期性的执行下个程序，并全屏显示执行结果。你可以拿他来监测你想要的一切命令的结果变化，比如 tail 一个 log 文件，ls 监测某个文件的大小变化，看你的想象力了！</p>
-<p> 1．命令格式：</p>
-<p> watch[参数][命令]</p>
-<p> 2．命令功能：</p>
-<p> 可以将命令的输出结果输出到标准输出设备，多用于周期性执行命令/定时执行命令</p>
-<p> 3．命令参数：</p>
-<p> -n或–interval  watch缺省每2秒运行一下程序，可以用-n或-interval来指定间隔的时间。</p>
-<p> -d或–differences  用-d或–differences 选项watch 会高亮显示变化的区域。 而-d=cumulative选项会把变动过的地方(不管最近的那次有没有变动)都高亮显示出来。</p>
-<p> -t 或-no-title  会关闭watch命令在顶部的时间间隔,命令，当前时间的输出。</p>
-<pre><code>-h, --help 查看帮助文档
+        <p>sysctl命令被用于在内核运行时动态地修改内核的运行参数，可用的内核参数在目录/proc/sys中。<br>它包含一些TCP/ip堆栈和虚拟内存系统的高级选项， 这可以让有经验的管理员提高引人注目的系统性能。用sysctl可以读取设置超过五百个系统变量。 </p>
+<p> 语法</p>
+<p> sysctl(选项)(参数)</p>
+<pre><code>选项
 
-4．使用实例：
+-n：打印值时不打印关键字；
+-e：忽略未知关键字错误；
+-N：仅打印名称；
+-w：当改变sysctl设置时使用此项；
+-p：从配置文件“/etc/sysctl.conf”加载内核参数设置；
+-a：打印当前所有可用的内核参数变量和值；
+-A：以表格方式打印当前所有可用的内核参数变量和值。
+</code></pre><p>Linux sysctl命令用于设置系统核心参数。常见用法：</p>
+<ol>
+<li>列出系统全部核心参数并分屏显示：</li>
+</ol>
+<p>sysctl -a | more</p>
+<p>核心设置都是文件（.代表子目录），存放在/proc/sys/目录下。</p>
+<ol start="2">
+<li>临时修改系统核心参数（核心参数必须用完整字段）：</li>
+</ol>
+<p>sysctl -w net.ipv4.icmp_echo_ignore_all=”1”</p>
+<p>对于x.y.m所在的路径为/proc/sys/x/y/m 。如net.ipv4.icmp_echo_ignore_all对应的文件为/proc/sys/net/ipv4/icmp_echo_ignore_all</p>
+<p>注意：-w参数只对英文单词有效，对数字无效。</p>
+<ol start="3">
+<li>永久修改系统核心参数（核心参数只用最后的字段）：</li>
+</ol>
+<p>echo “icmp_echo_ignore_all = 1” &gt;&gt; /etc/sysctl.conf</p>
+<p>或者直接修改sysctl.conf配置文件：</p>
+<p>vi /etc/sysctl.conf</p>
+<ol start="4">
+<li>让修改后的系统配置文件生效：</li>
+</ol>
+<p>sysctl –p</p>
+<p>如果仅仅是想临时改变某个系统参数的值,可以用两种方法来实现,例如想启用IP路由转发功能:</p>
+<p>1) echo 1 &gt; /proc/sys/net/ipv4/ip_forward</p>
+<p>2) sysctl -w net.ipv4.ip_forward=1以上两种方法都可能立即开启路由功能,但如果系统重启,或执行了 service network restart命令,所设置的值即会丢失,如果想永久保留配置,可以修改/etc/sysctl.conf文件将 net.ipv4.ip_forward=0改为net.ipv4.ip_forward=1</p>
 
-实例1：
-
-命令：每隔一秒高亮显示网络链接数的变化情况
-
-watch -n 1 -d netstat -ant
-说明：
-
-其它操作：
-切换终端： Ctrl+x
-退出watch：Ctrl+g
-
-实例2：每隔一秒高亮显示http链接数的变化情况
-
-命令：
-
-watch -n 1 -d &apos;pstree|grep http&apos;
-
-说明：
-
-每隔一秒高亮显示http链接数的变化情况。 后面接的命令若带有管道符，需要加&apos;&apos;将命令区域归整。
-
-实例3：实时查看模拟攻击客户机建立起来的连接数
-
-命令：
-
-watch &apos;netstat -an | grep:21 | \ grep&lt;模拟攻击客户机的IP&gt;| wc -l&apos; 
-</code></pre>
       
     </div>
     
@@ -448,8 +446,8 @@ watch &apos;netstat -an | grep:21 | \ grep&lt;模拟攻击客户机的IP&gt;| wc
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/12/linux命令-sysctl/" rel="next" title="sysctl">
-                <i class="fa fa-chevron-left"></i> sysctl
+              <a href="/2018/04/28/git/git入门/" rel="next" title="git入门">
+                <i class="fa fa-chevron-left"></i> git入门
               </a>
             
           </div>
@@ -458,8 +456,8 @@ watch &apos;netstat -an | grep:21 | \ grep&lt;模拟攻击客户机的IP&gt;| wc
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/05/20/Openvswitch入门/" rel="prev" title="Openvswitch入门">
-                Openvswitch入门 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/05/13/linux命令/watch/" rel="prev" title="watch">
+                watch <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

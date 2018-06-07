@@ -296,7 +296,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/20/Openvswitch入门/">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/31/python/python函数的参数是值传递还是传引用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="雪域刀郎">
@@ -315,7 +315,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/20/Openvswitch入门/" itemprop="url">Openvswitch入门</a></h1>
+                <a class="post-title-link" href="/2018/05/31/python/python函数的参数是值传递还是传引用/" itemprop="url">python函数的参数是值传递还是传引用</a></h1>
         
 
         <div class="post-meta">
@@ -327,8 +327,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-20T11:59:22+08:00">
-                2018-05-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-31T22:29:04+08:00">
+                2018-05-31
               </time>
             
 
@@ -350,8 +350,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络虚拟化/" itemprop="url" rel="index">
-                    <span itemprop="name">网络虚拟化</span>
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
                   </a>
                 </span>
 
@@ -389,19 +389,20 @@
       
         
           
-          OVS 网络架构
-OVS概念BridgeBridge代表一个以太网交换机(Switch)，一个主机中可以创建一个或者多个Bridge。Bridge的功能是根据一定规则，把从端口收到的数据包转发到另一个或多个端口，上面例子中有三个Bridge，br-tun，br-int，br-ext
-添加一个网桥br0
-1ovs-vsctl add-br br0
-Port端口Port与物理交换机的端口概念类似，Port是OVS Bridge上创建的一个虚拟端口，每个Port都隶属于一个Bridge。Port有以下几种类型
+          python函数的四种参数传递方式python中函数传递参数有四种形式
 
-Normal
+fun1(a,b,c)fun2(a=1,b=2,c=3)fun3(*args)fun4(**kargs)
 
-可以把操作系统中已有的网卡(物理网卡em1/eth0,或虚拟机的虚拟网卡
+在 C/C++ 中，传值和传引用是函数参数传递的两种方式，在Python中参数是如何传递的？回答这个问题前，先来看两段代码。
+代码1：
+1234567def test(b):    b = 2    print(b)a = 1test(a)  # 输出：2print(a) # 输出：1
+看了代码段1的同学可能会说参数是值传递。
+代码2：
+123456789def test(args):    args.append
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/05/20/Openvswitch入门/#more" rel="contents">
+            <a class="btn" href="/2018/05/31/python/python函数的参数是值传递还是传引用/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -452,7 +453,7 @@ Normal
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/13/watch/">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/20/虚拟化/Openvswitch入门/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="雪域刀郎">
@@ -471,7 +472,163 @@ Normal
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/13/watch/" itemprop="url">watch</a></h1>
+                <a class="post-title-link" href="/2018/05/20/虚拟化/Openvswitch入门/" itemprop="url">Openvswitch入门</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-20T11:59:22+08:00">
+                2018-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/虚拟化/" itemprop="url" rel="index">
+                    <span itemprop="name">虚拟化</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          OVS 网络架构
+OVS概念BridgeBridge代表一个以太网交换机(Switch)，一个主机中可以创建一个或者多个Bridge。Bridge的功能是根据一定规则，把从端口收到的数据包转发到另一个或多个端口，上面例子中有三个Bridge，br-tun，br-int，br-ext
+添加一个网桥br0
+1ovs-vsctl add-br br0
+Port端口Port与物理交换机的端口概念类似，Port是OVS Bridge上创建的一个虚拟端口，每个Port都隶属于一个Bridge。Port有以下几种类型
+
+Normal
+
+可以把操作系统中已有的网卡(物理网卡em1/eth0,或虚拟机的虚拟网卡
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/20/虚拟化/Openvswitch入门/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/13/linux命令/watch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="雪域刀郎">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪域刀郎的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/13/linux命令/watch/" itemprop="url">watch</a></h1>
         
 
         <div class="post-meta">
@@ -555,7 +712,7 @@ Normal
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/05/13/watch/#more" rel="contents">
+            <a class="btn" href="/2018/05/13/linux命令/watch/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -606,7 +763,7 @@ Normal
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/12/linux命令-sysctl/">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/12/linux命令/sysctl/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="雪域刀郎">
@@ -625,7 +782,7 @@ Normal
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/12/linux命令-sysctl/" itemprop="url">sysctl</a></h1>
+                <a class="post-title-link" href="/2018/05/12/linux命令/sysctl/" itemprop="url">sysctl</a></h1>
         
 
         <div class="post-meta">
@@ -715,7 +872,7 @@ Linux
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/05/12/linux命令-sysctl/#more" rel="contents">
+            <a class="btn" href="/2018/05/12/linux命令/sysctl/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -766,7 +923,7 @@ Linux
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/04/28/git入门/">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/04/28/git/git入门/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="雪域刀郎">
@@ -785,7 +942,7 @@ Linux
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/28/git入门/" itemprop="url">git入门</a></h1>
+                <a class="post-title-link" href="/2018/04/28/git/git入门/" itemprop="url">git入门</a></h1>
         
 
         <div class="post-meta">
@@ -865,7 +1022,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/28/git入门/#more" rel="contents">
+            <a class="btn" href="/2018/04/28/git/git入门/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -916,7 +1073,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/04/01/Linux下如何避免从删库到跑路的悲剧/">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/04/01/linux/Linux下如何避免从删库到跑路的悲剧/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="雪域刀郎">
@@ -935,7 +1092,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/01/Linux下如何避免从删库到跑路的悲剧/" itemprop="url">Linux下如何避免从删库到跑路的悲剧</a></h1>
+                <a class="post-title-link" href="/2018/04/01/linux/Linux下如何避免从删库到跑路的悲剧/" itemprop="url">Linux下如何避免从删库到跑路的悲剧</a></h1>
         
 
         <div class="post-meta">
@@ -1018,7 +1175,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/04/01/Linux下如何避免从删库到跑路的悲剧/#more" rel="contents">
+            <a class="btn" href="/2018/04/01/linux/Linux下如何避免从删库到跑路的悲剧/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1069,7 +1226,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/02/03/虚拟化入门/">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/02/03/虚拟化/虚拟化入门/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="雪域刀郎">
@@ -1088,7 +1245,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/02/03/虚拟化入门/" itemprop="url">虚拟化入门</a></h1>
+                <a class="post-title-link" href="/2018/02/03/虚拟化/虚拟化入门/" itemprop="url">虚拟化入门</a></h1>
         
 
         <div class="post-meta">
@@ -1169,7 +1326,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/02/03/虚拟化入门/#more" rel="contents">
+            <a class="btn" href="/2018/02/03/虚拟化/虚拟化入门/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1253,7 +1410,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1264,7 +1421,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1275,7 +1432,7 @@ Git  的工作需要调用 curl，zlib，openssl，expat，libiconv 等库的代
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
