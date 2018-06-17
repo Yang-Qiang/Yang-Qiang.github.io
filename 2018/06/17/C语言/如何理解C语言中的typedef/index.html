@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="C语言," />
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="sysctl命令被用于在内核运行时动态地修改内核的运行参数，可用的内核参数在目录/proc/sys中。它包含一些TCP/ip堆栈和虚拟内存系统的高级选项， 这可以让有经验的管理员提高引人注目的系统性能。用sysctl可以读取设置超过五百个系统变量。   语法  sysctl(选项)(参数) 选项  -n：打印值时不打印关键字； -e：忽略未知关键字错误； -N：仅打印名称； -w：当改变sysct">
+<meta name="description" content="在理解C语言中的typedef的使用之前，先了解C语言指针的使用。 先从最简单的开始，逐步加深。 12345678910（1）int (*func)(int *p);（2）int (*func)(int *p, int (*f)(int*));（3）int (*func[5])(int *p);（4）int (*(*func)[5])(int *p);（5）int (*(*func)(int *">
+<meta name="keywords" content="C语言">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sysctl">
-<meta property="og:url" content="http://www.yang-qiang.com/2018/05/12/linux命令/sysctl/index.html">
+<meta property="og:title" content="如何理解C语言中的typedef">
+<meta property="og:url" content="http://www.yang-qiang.com/2018/06/17/C语言/如何理解C语言中的typedef/index.html">
 <meta property="og:site_name" content="雪域刀郎的博客">
-<meta property="og:description" content="sysctl命令被用于在内核运行时动态地修改内核的运行参数，可用的内核参数在目录/proc/sys中。它包含一些TCP/ip堆栈和虚拟内存系统的高级选项， 这可以让有经验的管理员提高引人注目的系统性能。用sysctl可以读取设置超过五百个系统变量。   语法  sysctl(选项)(参数) 选项  -n：打印值时不打印关键字； -e：忽略未知关键字错误； -N：仅打印名称； -w：当改变sysct">
+<meta property="og:description" content="在理解C语言中的typedef的使用之前，先了解C语言指针的使用。 先从最简单的开始，逐步加深。 12345678910（1）int (*func)(int *p);（2）int (*func)(int *p, int (*f)(int*));（3）int (*func[5])(int *p);（4）int (*(*func)[5])(int *p);（5）int (*(*func)(int *">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-25T12:44:52.896Z">
+<meta property="og:updated_time" content="2018-06-17T07:58:43.464Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sysctl">
-<meta name="twitter:description" content="sysctl命令被用于在内核运行时动态地修改内核的运行参数，可用的内核参数在目录/proc/sys中。它包含一些TCP/ip堆栈和虚拟内存系统的高级选项， 这可以让有经验的管理员提高引人注目的系统性能。用sysctl可以读取设置超过五百个系统变量。   语法  sysctl(选项)(参数) 选项  -n：打印值时不打印关键字； -e：忽略未知关键字错误； -N：仅打印名称； -w：当改变sysct">
+<meta name="twitter:title" content="如何理解C语言中的typedef">
+<meta name="twitter:description" content="在理解C语言中的typedef的使用之前，先了解C语言指针的使用。 先从最简单的开始，逐步加深。 12345678910（1）int (*func)(int *p);（2）int (*func)(int *p, int (*f)(int*));（3）int (*func[5])(int *p);（4）int (*(*func)[5])(int *p);（5）int (*(*func)(int *">
 
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://www.yang-qiang.com/2018/05/12/linux命令/sysctl/"/>
+  <link rel="canonical" href="http://www.yang-qiang.com/2018/06/17/C语言/如何理解C语言中的typedef/"/>
 
 
 
 
 
-  <title>sysctl | 雪域刀郎的博客</title>
+  <title>如何理解C语言中的typedef | 雪域刀郎的博客</title>
   
 
 
@@ -296,7 +297,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/05/12/linux命令/sysctl/">
+    <link itemprop="mainEntityOfPage" href="http://www.yang-qiang.com/2018/06/17/C语言/如何理解C语言中的typedef/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="雪域刀郎">
@@ -313,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sysctl</h1>
+          <h1 class="post-title" itemprop="name headline">如何理解C语言中的typedef</h1>
         
 
         <div class="post-meta">
@@ -325,8 +326,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-12T21:47:26+08:00">
-                2018-05-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-17T14:55:51+08:00">
+                2018-06-17
               </time>
             
 
@@ -348,8 +349,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux命令/" itemprop="url" rel="index">
-                    <span itemprop="name">linux命令</span>
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
                   </a>
                 </span>
 
@@ -385,43 +386,43 @@
       
 
       
-        <p>sysctl命令被用于在内核运行时动态地修改内核的运行参数，可用的内核参数在目录/proc/sys中。<br>它包含一些TCP/ip堆栈和虚拟内存系统的高级选项， 这可以让有经验的管理员提高引人注目的系统性能。用sysctl可以读取设置超过五百个系统变量。 </p>
-<p> 语法</p>
-<p> sysctl(选项)(参数)</p>
-<pre><code>选项
-
--n：打印值时不打印关键字；
--e：忽略未知关键字错误；
--N：仅打印名称；
--w：当改变sysctl设置时使用此项；
--p：从配置文件“/etc/sysctl.conf”加载内核参数设置；
--a：打印当前所有可用的内核参数变量和值；
--A：以表格方式打印当前所有可用的内核参数变量和值。
-</code></pre><p>Linux sysctl命令用于设置系统核心参数。常见用法：</p>
+        <p> 在理解C语言中的typedef的使用之前，先了解C语言指针的使用。</p>
+<p>先从最简单的开始，逐步加深。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">1</span>）<span class="keyword">int</span> (*func)(<span class="keyword">int</span> *p);</span><br><span class="line">（<span class="number">2</span>）<span class="keyword">int</span> (*func)(<span class="keyword">int</span> *p, <span class="keyword">int</span> (*f)(<span class="keyword">int</span>*));</span><br><span class="line">（<span class="number">3</span>）<span class="keyword">int</span> (*func[<span class="number">5</span>])(<span class="keyword">int</span> *p);</span><br><span class="line">（<span class="number">4</span>）<span class="keyword">int</span> (*(*func)[<span class="number">5</span>])(<span class="keyword">int</span> *p);</span><br><span class="line">（<span class="number">5</span>）<span class="keyword">int</span> (*(*func)(<span class="keyword">int</span> *p))[<span class="number">5</span>];</span><br><span class="line">（6）int func(void) [5]; //错误</span><br><span class="line">（<span class="number">7</span>）<span class="keyword">int</span> func[<span class="number">5</span>](<span class="keyword">void</span>); <span class="comment">//错误</span></span><br><span class="line">（<span class="number">8</span>）<span class="keyword">int</span> (*(*func)[<span class="number">5</span>][<span class="number">6</span>])[<span class="number">7</span>][<span class="number">8</span>];</span><br><span class="line">（<span class="number">9</span>）<span class="keyword">int</span> (*(*(*func)(<span class="keyword">int</span> *))[<span class="number">5</span>])(<span class="keyword">int</span> *);</span><br><span class="line">（<span class="number">10</span>）<span class="keyword">int</span> (*(*func[<span class="number">7</span>][<span class="number">8</span>][<span class="number">9</span>])(<span class="keyword">int</span>*))[<span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+<p>对以上声明的解析，可以使用右左法则进行解析。</p>
+<p>右左法则：首先从最里面的圆括号（应该是未定义的标识符）看起，然后往右看，再往左看。每当遇到圆括号时，就应该掉转阅读方向。一旦解析完圆括号里面所有的东西，就跳出圆括号。重复这个过程直到整个声明解析完毕。</p>
+<p><strong>（1) int (<em>func)(int </em>p);</strong></p>
+<p>首先找到那个未定义的标识符，就是func，它的外面有一对圆括号，而且左边是一个<em>号，这说明func是一个指针，然后跳出这个圆括号，先看右边，也是一个圆括号，这说明(</em>func)是一个函数，而func是一个指向这类函数的指针，就是一个函数指针，这类函数具有int*类型的形参，返回值类型是 int。</p>
+<p><strong>（2) int ( <em>func)(int </em>p, int (<em>f)(int</em>) );</strong></p>
+<p>func被一对括号包含，且左边有一个<em>号，说明func是一个指针，跳出括号，右边也有个括号，那么func是一个指向函数的指针，这类函数具有int </em>和int (<em>)(int</em>)这样的形参，返回值为int类型。再来看一看func的形参int (<em>f)(int</em>)，类似前面的解释，f也是一个函数指针，指向的函数具有int*类型的形参，返回值为int。</p>
+<p><strong>（3）int (<em>func[5])(int </em>p);</strong></p>
+<p>func右边是一个[]运算符，说明func是一个具有5个元素的数组，func的左边有一个<em>，说明func的元素是指针，要注意这里的</em>不是修饰 func的，而是修饰func[5]的，原因是[]运算符优先级比<em>高，func先跟[]结合，因此</em>修饰的是func[5]。跳出这个括号，看右边，也是一对圆括号，说明func数组的元素是函数类型的指针，它所指向的函数具有int*类型的形参，返回值类型为int。</p>
+<p><strong>(4) int (*(*func)[5])(int *p);</strong></p>
+<p>func被一个圆括号包含，左边又有一个<em>，那么func是一个指针，跳出括号，右边是一个[]运算符号，说明func是一个指向数组的指针，现在往左看，左边有一个</em>号，说明这个数组的元素是指针，再跳出括号，右边又有一个括号，说明这个数组的元素是指向函数的指针。总结一下，就是：func是一个指向数组的指针，这个数组的元素是函数指针，这些指针指向具有int*形参，返回值为int类型的函数。</p>
+<p><strong>（5）int (*(*func)(int *p))[5];</strong> </p>
+<p>func是一个函数指针，这类函数具有int*类型的形参，返回值是指向数组的指针，所指向的数组的元素是具有5个int元素的数组。</p>
+<p>要注意有些复杂指针声明是非法的，例如：</p>
+<p><strong>（6）int func(void) [5];</strong></p>
+<p>func是一个返回值为具有5个int元素的数组的函数。但C语言的函数返回值不能为数组，这是因为如果允许函数返回值为数组，那么接收这个数组的内容的东西，也必须是一个数组，但C语言的数组名是一个右值，它不能作为左值来接收另一个数组，因此函数返回值不能为数组。</p>
+<p><strong>（7）int func[5](void);</strong></p>
+<p>func是一个具有5个元素的数组，这个数组的元素都是函数。这也是非法的，因为数组的元素除了类型必须一样外，每个元素所占用的内存空间也必须相同，显然函数是无法达到这个要求的，即使函数的类型一样，但函数所占用的空间通常是不相同的。</p>
+<p><strong>（8）int (*(*func)[5][6])[7][8];</strong></p>
+<p>func是一个指向数组的指针，这类数组的元素是一个具有5X6个int元素的二维数组，而这个二维数组的元素又是一个二维数组。typedef分解：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typedef int (*PARA)[7][8];</span><br><span class="line">typedef PARA (*func)[5][6];</span><br></pre></td></tr></table></figure>
+<p><strong>（9）int (*(*(*func)(int <em>))[5])(int </em>);</strong></p>
+<p>func是一个函数指针，这类函数的返回值是一个指向数组的指针，所指向数组的元素也是函数指针，指向的函数具有int*形参，返回值为int。typedef分解：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">int</span> <span class="params">(*PARA1)</span><span class="params">(<span class="keyword">int</span>*)</span></span>;</span><br><span class="line">typedef PARA1 (*PARA2)[5];</span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">PARA2</span> <span class="params">(*func)</span><span class="params">(<span class="keyword">int</span>*)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><strong>（10）int (*(*func[7][8][9])(int*))[5];</strong></p>
+<p>func是一个数组，这个数组的元素是函数指针，这类函数具有int*的形参，返回值是指向数组的指针，所指向的数组的元素是具有5个int元素的数组。typedef分解：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">typedef int (*PARA1)[5];</span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">PARA1</span> <span class="params">(*PARA2)</span><span class="params">(<span class="keyword">int</span>*)</span></span>;</span><br><span class="line"><span class="keyword">typedef</span> PARA2 func[<span class="number">7</span>][<span class="number">8</span>][<span class="number">9</span>];</span><br></pre></td></tr></table></figure>
+<p>实际当中，需要声明一个复杂指针时，如果把整个声明写成上面所示的形式，对程序可读性是一大损害。应该用typedef来对声明逐层分解，增强可读性。</p>
+<p>那么现在来理解typedef int ( func)(void)语句;<br>去掉”typedef”得到一个正常的变量声明语句(指针函数声明): int (func)(void);这里变量func的类型为一个函数类型，而当加上”typedef”后，就得到一个新的类型, 原来的变量名称func就变成新类型的名称，func不再是变量名称，而是一个新类型名－－func，用这个新的类型就可以去定义和原来func变量相同类型的变量，注意看去除和加上”typedef“时func的变化，没有”typedef”时，func为变量名，加上”typedef”时，func为类型名(这个类型等同于原来func变量的类型)，因此下面正确：** </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">int</span> <span class="params">(* t_func)</span><span class="params">(<span class="keyword">void</span>)</span></span>;        <span class="comment">//定义了一个新类型 t_func; </span></span><br><span class="line"><span class="keyword">int</span> (*func)(<span class="keyword">void</span>);                   <span class="comment">//变量声明语句(指针函数声明):  </span></span><br><span class="line">t_func func2 = func;                 <span class="comment">//func2和func是相同类型，这就好理解加上"typedef"产生的变化了。</span></span><br></pre></td></tr></table></figure>
+<p>可以这么想，加上”typedef”关键字后，原来语句声明的变量变成类型，以下正确： </p>
 <ol>
-<li>列出系统全部核心参数并分屏显示：</li>
+<li>int id; ==&gt; typedef int ID; //在加上”typedef”后，变量id就变成类型ID(为了清楚，把类型变大写)，这个新类型等同于原来变量对应的类型; </li>
+<li>int a[10]; ==&gt; typedef int A[10];//加上”typedef”后，变量a就成了类型A(为了清楚，把类型变大写)，这个新类型等同于原来变量对应的类型;</li>
 </ol>
-<p>sysctl -a | more</p>
-<p>核心设置都是文件（.代表子目录），存放在/proc/sys/目录下。</p>
-<ol start="2">
-<li>临时修改系统核心参数（核心参数必须用完整字段）：</li>
-</ol>
-<p>sysctl -w net.ipv4.icmp_echo_ignore_all=”1”</p>
-<p>对于x.y.m所在的路径为/proc/sys/x/y/m 。如net.ipv4.icmp_echo_ignore_all对应的文件为/proc/sys/net/ipv4/icmp_echo_ignore_all</p>
-<p>注意：-w参数只对英文单词有效，对数字无效。</p>
-<ol start="3">
-<li>永久修改系统核心参数（核心参数只用最后的字段）：</li>
-</ol>
-<p>echo “icmp_echo_ignore_all = 1” &gt;&gt; /etc/sysctl.conf</p>
-<p>或者直接修改sysctl.conf配置文件：</p>
-<p>vi /etc/sysctl.conf</p>
-<ol start="4">
-<li>让修改后的系统配置文件生效：</li>
-</ol>
-<p>sysctl –p</p>
-<p>如果仅仅是想临时改变某个系统参数的值,可以用两种方法来实现,例如想启用IP路由转发功能:</p>
-<p>1) echo 1 &gt; /proc/sys/net/ipv4/ip_forward</p>
-<p>2) sysctl -w net.ipv4.ip_forward=1以上两种方法都可能立即开启路由功能,但如果系统重启,或执行了 service network restart命令,所设置的值即会丢失,如果想永久保留配置,可以修改/etc/sysctl.conf文件将 net.ipv4.ip_forward=0改为net.ipv4.ip_forward=1</p>
 
       
     </div>
@@ -437,6 +438,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/C语言/" rel="tag"># C语言</a>
+          
+        </div>
+      
 
       
       
@@ -446,8 +453,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/28/git/git入门/" rel="next" title="git入门">
-                <i class="fa fa-chevron-left"></i> git入门
+              <a href="/2018/05/31/python/python函数的参数是值传递还是传引用/" rel="next" title="python函数的参数是值传递还是传引用">
+                <i class="fa fa-chevron-left"></i> python函数的参数是值传递还是传引用
               </a>
             
           </div>
@@ -455,10 +462,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/13/linux命令/watch/" rel="prev" title="watch">
-                watch <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

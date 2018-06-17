@@ -4,14 +4,36 @@
 
     
   <url>
-    <loc>http://www.yang-qiang.com/2018/02/03/%E8%99%9A%E6%8B%9F%E5%8C%96/%E8%99%9A%E6%8B%9F%E5%8C%96%E5%85%A5%E9%97%A8/</loc>
-    <lastmod>2018-06-07T14:27:31.511Z</lastmod>
+    <loc>http://www.yang-qiang.com/2018/06/17/C%E8%AF%AD%E8%A8%80/%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3C%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84typedef/</loc>
+    <lastmod>2018-06-17T07:58:43.464Z</lastmod>
     <data>
         <display>
-        <title>虚拟化入门</title>
-        <pubTime>2018-02-03T13:00:15.000Z</pubTime>
+        <title>如何理解C语言中的typedef</title>
+        <pubTime>2018-06-17T06:55:51.000Z</pubTime>
         
-        <tag>虚拟化技术</tag>
+        <tag>C语言</tag>
+         
+         
+           
+             
+              <breadCrumb title="编程" url="http://www.yang-qiang.com/categories/%E7%BC%96%E7%A8%8B/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.yang-qiang.com/2018/05/20/%E8%99%9A%E6%8B%9F%E5%8C%96/Openvswitch%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2018-06-07T14:29:56.643Z</lastmod>
+    <data>
+        <display>
+        <title>Openvswitch入门</title>
+        <pubTime>2018-05-20T03:59:22.000Z</pubTime>
+        
+        <tag>openvswitch</tag>
+         
+        <tag>网络虚拟化</tag>
          
          
            
@@ -24,16 +46,14 @@
 
     
   <url>
-    <loc>http://www.yang-qiang.com/2018/05/20/%E8%99%9A%E6%8B%9F%E5%8C%96/Openvswitch%E5%85%A5%E9%97%A8/</loc>
-    <lastmod>2018-06-07T14:27:06.170Z</lastmod>
+    <loc>http://www.yang-qiang.com/2018/02/03/%E8%99%9A%E6%8B%9F%E5%8C%96/%E8%99%9A%E6%8B%9F%E5%8C%96%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2018-06-07T14:27:31.511Z</lastmod>
     <data>
         <display>
-        <title>Openvswitch入门</title>
-        <pubTime>2018-05-20T03:59:22.000Z</pubTime>
+        <title>虚拟化入门</title>
+        <pubTime>2018-02-03T13:00:15.000Z</pubTime>
         
-        <tag>openvswitch</tag>
-         
-        <tag>网络虚拟化</tag>
+        <tag>虚拟化技术</tag>
          
          
            
